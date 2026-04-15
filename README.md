@@ -102,12 +102,7 @@ O workflow `.github/workflows/deploy-s3.yml` faz:
 3. `aws s3 sync` dos arquivos de código para o bucket (excluindo ROMs e assets)
 4. Purge automático do cache da Cloudflare
 
-Secrets necessários no repositório:
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_REGION`
-- `CLOUDFLARE_ZONE_ID`
-- `CLOUDFLARE_TOKEN`
+As credenciais AWS e Cloudflare são gerenciadas via GitHub Secrets, sem nenhuma informação sensível no código.
 
 ---
 
