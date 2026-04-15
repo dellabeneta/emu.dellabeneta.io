@@ -1091,6 +1091,37 @@ function launchGame() {
   bootScreen.style.opacity = '1';
   bootScreen.style.display = 'flex';
 
+  // Canvas noise
+  const bootCanvas = document.getElementById('boot-canvas');
+  let noiseRaf;
+  if (bootCanvas) {
+    const ctx = bootCanvas.getContext('2d');
+    bootCanvas.width  = bootCanvas.offsetWidth;
+    bootCanvas.height = bootCanvas.offsetHeight;
+    function drawNoise() {
+      const w = bootCanvas.width, h = bootCanvas.height;
+      const imageData = ctx.createImageData(w, h);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const v = Math.random() * 255 | 0;
+        data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 255;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      noiseRaf = requestAnimationFrame(drawNoise);
+    }
+    drawNoise();
+  }
+
+  // Fases do boot
+  const bootLogo = document.querySelector('.boot-logo');
+  if (bootLogo) {
+    bootLogo.className = 'boot-logo hidden';
+    setTimeout(() => { bootLogo.className = 'boot-logo tuning'; }, 800);
+    setTimeout(() => { bootLogo.className = 'boot-logo stable'; }, 2100);
+  }
+
+
+
   // 2. Configuração do EmulatorJS
   // Mapeamento de cores baseado na nossa lista PLATFORMS
   const coreMap = {
@@ -1180,9 +1211,10 @@ function launchGame() {
   // 3. Simulação de Boot (3 Segundos de Branding)
 
   setTimeout(() => {
+    if (noiseRaf) cancelAnimationFrame(noiseRaf);
     bootScreen.style.opacity = '0';
-    emuContainer.classList.add('visible'); // Revela o jogo carregado
-    
+    emuContainer.classList.add('visible');
+
     setTimeout(() => {
       bootScreen.style.display = 'none';
     }, 800);

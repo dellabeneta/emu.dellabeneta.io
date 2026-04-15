@@ -920,17 +920,30 @@ kbd {
   transition: opacity 0.8s ease-out;
 }
 
-.boot-noise {
+#boot-canvas {
   position: absolute;
-  inset: -20%; /* Maior para permitir o tremor sem bordas brancas */
-  background: 
-    repeating-radial-gradient(#fff 0 0.0001%, #222 0 0.0002%) 50% 0/2500px 2500px,
-    repeating-conic-gradient(#fff 0 0.0001%, #111 0 0.0002%) 50% 50%/2500px 2500px;
-  background-blend-mode: overlay;
-  opacity: 0.25; /* Mais intenso como na foto */
-  animation: tv-snow 0.1s infinite;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  filter: contrast(200%) brightness(150%);
+  opacity: 0.4;
+}
+
+@keyframes scanline-sweep {
+  0%   { top: -2%; }
+  100% { top: 102%; }
+}
+
+.boot-scanline {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.5), transparent);
+  animation: scanline-sweep 0.9s linear infinite;
+  pointer-events: none;
+  z-index: 10003;
+  box-shadow: 0 0 10px 3px rgba(255,255,255,0.2);
 }
 
 @keyframes tv-snow {
@@ -956,7 +969,7 @@ kbd {
   color: var(--text);
   text-align: center;
   letter-spacing: -0.02em;
-  animation: boot-glow 2s ease-in-out infinite;
+  animation: none;
   filter: drop-shadow(0 0 50px var(--green3));
   display: flex;
   flex-direction: column;
@@ -965,10 +978,27 @@ kbd {
 
 
 
+@keyframes logo-tune {
+  0%   { transform: translateX(-12px) skewX(-3deg); opacity: 0.2; }
+  10%  { transform: translateX(10px)  skewX(2deg);  opacity: 0.5; }
+  20%  { transform: translateX(-8px)  skewX(-2deg); opacity: 0.3; }
+  30%  { transform: translateX(12px)  skewX(3deg);  opacity: 0.7; }
+  40%  { transform: translateX(-6px)  skewX(-1deg); opacity: 0.5; }
+  50%  { transform: translateX(6px)   skewX(1deg);  opacity: 0.8; }
+  65%  { transform: translateX(-3px);               opacity: 0.9; }
+  80%  { transform: translateX(2px);                opacity: 0.95; }
+  100% { transform: translateX(0);                  opacity: 1; }
+}
+
+.boot-logo.hidden { opacity: 0; }
+.boot-logo.tuning { animation: logo-tune 1.2s ease-out forwards; }
+.boot-logo.stable { animation: boot-glow 2s ease-in-out infinite; }
+
 @keyframes boot-glow {
   0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 65, 0); opacity: 0.8; }
   50% { text-shadow: 0 0 30px rgba(0, 255, 65, 0.4); opacity: 1; }
 }
+
 
 /* --- EXIT BUTTON --- */
 .exit-emulator {
