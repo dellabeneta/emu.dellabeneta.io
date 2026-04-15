@@ -80,7 +80,7 @@ const PLATFORMS = [
       { title: "Breath of Fire", year: "1993", file: "breath-of-fire" },
       { title: "Chrono Trigger", year: "1995", file: "chrono-trigger" },
       { title: "Contra III: The Alien Wars", year: "1992", file: "contra-iii-the-alien-wars" },
-      { title: "Donkey Kong Country 2: Diddy's Kong Quest", year: "1995", file: "donkey-kong-country-2-diddy's-kong-quest" },
+      { title: "Donkey Kong Country 2: Diddy's Kong Quest", displayTitle: "Donkey Kong Country 2: Diddy's Kong<br>Quest", year: "1995", file: "donkey-kong-country-2-diddy's-kong-quest" },
       { title: "Donkey Kong Country 3: Dixie Kong's Double Trouble!", year: "1996", file: "donkey-kong-country-3-dixie-kong's-double-trouble!" },
       { title: "Donkey Kong Country", year: "1994", file: "donkey-kong-country" },
       { title: "EarthBound", year: "1994", file: "earthbound" },
@@ -908,7 +908,7 @@ function renderGameList(gamesList) {
 
   container.innerHTML = sorted.map(g => `
     <div class="game-item" data-title="${g.title}">
-      <span class="game-title">${g.title}</span>
+      <span class="game-title">${g.displayTitle || g.title}</span>
       <span class="game-year">${g.year}</span>
       <span class="game-launch">${currentLang === 'pt' ? 'JOGAR' : 'PLAY'}</span>
     </div>
