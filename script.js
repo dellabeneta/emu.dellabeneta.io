@@ -7,7 +7,7 @@ const PLATFORMS = [
     decade: "80s",
     maker: "Nintendo",
     cores: ["fceumm"],
-    img: "assets/nes.png",
+    img: "assets/nes.avif",
     desc: "O NES resgatou a indústria após o crash de 83, estabelecendo padrões globais de excelência que a Nintendo mantém até hoje. Com hardware baseado no processador MOS 6502, trouxe experiências de arcade para os lares, imortalizando franquias como Super Mario, Zelda e Metroid. Sua vasta biblioteca 8-bit foi o alicerce onde as maiores lendas do design de jogos moderno deram seus primeiros passos revolucionários. Curiosidade: o D-pad em cruz do controle do NES foi inventado por Gunpei Yokoi e é tão revolucionário que está patenteado — sua influência persiste em todos os controles fabricados até hoje.",
     games: [
       { title: "Adventure Island", year: "1986", file: "adventure-island.nes" },
@@ -71,7 +71,7 @@ const PLATFORMS = [
     decade: "90s",
     maker: "Nintendo",
     cores: ["snes9x"],
-    img: "assets/snes.png",
+    img: "assets/snes.avif",
     desc: "O Super Nintendo é o ápice da era 2D, unindo 16 bits de nostalgia com inovações como o revolucionário Mode 7 e áudio ADPCM. Foi o berço de RPGs monumentais como Chrono Trigger e Final Fantasy VI, além de redefinir plataformas com Donkey Kong Country. Um console onde a criatividade sem limites provou que mundos digitais poderiam ser mágicos, imersivos e tecnicamente inesquecíveis. Curiosidade: o chip de áudio SPC700 era tão avançado para a época que compositores como Koji Kondo e Nobuo Uematsu criaram trilhas sonoras consideradas obras de arte — e que são remixadas e regravadas por orquestras ao redor do mundo até hoje.",
     games: [
       { title: "Aladdin", year: "1992", file: "aladdin" },
@@ -135,7 +135,7 @@ const PLATFORMS = [
     decade: "80s",
     maker: "Sega",
     cores: ["genesis_plus_gx"],
-    img: "assets/master.png",
+    img: "assets/master.avif",
     desc: "O Sega Master System destacou-se por cores vibrantes e um chip de vídeo superior, tornando-se uma lenda absoluta no Brasil e Europa. Trouxe a força dos fliperamas para casa com ports como After Burner e OutRun, além de dar vida a heróis como Alex Kidd e Phantasy Star. Um sistema durável que pavimentou o caminho de atitude e inovação que definiria a identidade da Sega nas décadas seguintes. Curiosidade: no Brasil a Tectoy ainda fabricava versões do console em 2016, tornando-o um dos videogames com maior longevidade comercial da história.",
     games: [
       { title: "Baku Baku Animal", year: "1995", file: "baku-baku-animal" },
@@ -179,7 +179,7 @@ const PLATFORMS = [
     decade: "80s",
     maker: "Sega",
     cores: ["genesis_plus_gx"],
-    img: "assets/mega.png",
+    img: "assets/mega.avif",
     desc: "O Sega Mega Drive trouxe velocidade, 'atitude' e áudio FM da Yamaha, desafiando a hegemonia da Nintendo nos anos 90. Casa do Sonic, Streets of Rage e Golden Axe, consolidou uma identidade visual urbana que atraiu milhões com o famoso 'Blast Processing'. Sua arquitetura robusta permitiu ports de arcade quase perfeitos, definindo uma das eras mais competitivas e criativas da história. Curiosidade: o processador principal era um Motorola 68000 — o mesmo chip usado nos primeiros computadores Macintosh da Apple.",
     games: [
       { title: "Aladdin", year: "1993", file: "aladdin" },
@@ -243,7 +243,7 @@ const PLATFORMS = [
     decade: "80s",
     maker: "Nintendo",
     cores: ["gambatte"],
-    img: "assets/gb.png",
+    img: "assets/gb.avif",
     desc: "O Game Boy original provou que a jogabilidade supera qualquer especificação técnica, tornando-se um fenômeno global junto com Tetris. Com incrível autonomia de bateria e uma biblioteca imbatível, foi o lar de Pokémon e das primeiras aventuras portáteis de Link. Sua robustez quase indestrutível consolidou a Nintendo como rainha absoluta do mercado portátil por mais de uma década. Curiosidade: uma unidade de Game Boy sobreviveu a um bombardeio durante a Guerra do Golfo e ainda funcionava — a Nintendo a exibiu por anos em sua sede em Kyoto como prova de durabilidade.",
     games: [
       { title: "Castlevania II", year: "1991", file: "castlevania-ii-belmonts-revenge.gb" },
@@ -276,7 +276,7 @@ const PLATFORMS = [
     decade: "90s",
     maker: "Nintendo",
     cores: ["gambatte"],
-    img: "assets/gbc.png",
+    img: "assets/gbc.avif",
     desc: "Lançado em 1998, o Game Boy Color trouxe cores vibrantes e um processador mais rápido, mantendo retrocompatibilidade total com o original. Permitiu mundos mais detalhados em clássicos como Pokémon Gold/Silver e The Legend of Zelda. Foi a ponte tecnológica perfeita entre a simplicidade 8-bit inicial e a sofisticação que viria com a futura geração Advance. Curiosidade: a Nintendo o classificou oficialmente como uma simples atualização — não uma nova geração — mesmo rodando quase o dobro da velocidade do Game Boy original.",
     games: [
       { title: "Dragon Warrior Monsters 2", year: "2001", file: "dragon-warrior-monsters-2-taras-adventure.gbc" },
@@ -309,7 +309,7 @@ const PLATFORMS = [
     decade: "00s",
     maker: "Nintendo",
     cores: ["mgba"],
-    img: "assets/gba.png",
+    img: "assets/gba.avif",
     desc: "O Game Boy Advance levou o poder do SNES para o bolso, sendo o santuário supremo da pixel art de alta fidelidade em 32 bits. Entregou ports impecáveis e obras-primas como Metroid Fusion e Castlevania: Aria of Sorrow em sua tela widescreen. Uma máquina lendária amada por puristas do 2D por oferecer experiências profundas e cinematográficas em qualquer lugar. Curiosidade: o áudio estéreo completo só saía pelo conector de fone — o alto-falante emitia som mono. Muitos desenvolvedores nem sabiam que os jogadores de fone recebiam uma experiência sonora completamente diferente.",
     games: [
       { title: "Fire Emblem (JP)", year: "2002", file: "fire-emblem-fuuin-no-tsurugi.gba" },
@@ -342,7 +342,7 @@ const PLATFORMS = [
     decade: "90s",
     maker: "Sony",
     cores: ["pcsx_rearmed"],
-    img: "assets/psx.png",
+    img: "assets/psx.avif",
     desc: "O PlayStation 1 mudou a história ao mainstreamizar polígonos 3D e o CD-ROM, encerrando a supremacia dos cartuchos nos lares. Franquias cinematográficas como Final Fantasy VII e Metal Gear Solid definiram sua identidade e narrativa madura. Com mais de 100 milhões de unidades vendidas, consolidou a Sony como a nova gigante global da indústria de entretenimento. Curiosidade: o PlayStation nasceu como um add-on para o Super Nintendo em parceria com a Nintendo — quando a Nintendo abandonou o projeto, a Sony decidiu lançar o hardware sozinha, criando acidentalmente seu maior concorrente.",
     games: [
       { title: "Alundra", year: "1997", file: "alundra.chd" },
@@ -385,7 +385,7 @@ const PLATFORMS = [
     decade: "80s/90s",
     maker: "Various",
     cores: ["fbneo"],
-    img: "assets/konami.png",
+    img: "assets/konami.avif",
     desc: "Um portal para a era de ouro dos fliperamas sob o potente motor FinalBurn Neo. Reúne sucessos da Konami, Midway e Capcom, cobrindo desde os pioneiros dos anos 80 até os complexos beat 'em ups cooperativos como The Simpsons e Sunset Riders. Oferece emulação de alta fidelidade que preserva cada pixel e nota musical, honrando o legado frenético dos coin-ops originais. Curiosidade: o FinalBurn Neo suporta mais de 10.000 títulos de arcade e é mantido voluntariamente pela comunidade até hoje, preservando hardware que seria impossível de emular comercialmente.",
     games: [
       { title: "The Simpsons", year: "1991", file: "simpsons2p" },
@@ -456,7 +456,7 @@ const PLATFORMS = [
     decade: "80s",
     maker: "Capcom",
     cores: ["fbneo"],
-    img: "assets/cps1.png",
+    img: "assets/cps1.avif",
     desc: "A CPS-1 foi o alicerce do império de fliperamas da Capcom, definindo o padrão de ação do final dos anos 80. Hardware poderoso que deu vida a Street Fighter II e Final Fight com sprites enormes e animações complexas. Com áudio Yamaha e visuais vibrantes, provou que a Capcom era a rainha absoluta da ação arcade e estabeleceu as bases de todos os futuros jogos de luta. Curiosidade: a Capcom protegia as placas com uma bateria que apagava as chaves de criptografia ao morrer — quando a bateria acaba, a placa morre definitivamente, tornando muitas originais irrecuperáveis hoje.",
     games: [
       { title: "Street Fighter II", year: "1991", file: "sf2" },
@@ -489,7 +489,7 @@ const PLATFORMS = [
     decade: "90s",
     maker: "Capcom",
     cores: ["fbneo"],
-    img: "assets/cps2.png",
+    img: "assets/cps2.avif",
     desc: "Famosa pelo som Q-Sound e carcaças coloridas, a CPS-2 dominou os fliperamas dos anos 90 com Street Fighter Alpha e Darkstalkers. Capaz de gerenciar centenas de cores e sprites fluídos, foi o palco dos primeiros crossovers explosivos da Marvel vs. Capcom. Um sistema que elevou a fidelidade sonora e visual, tornando-se um ícone imortal da cena de jogos de luta competitivos. Curiosidade: a CPS-2 também usava a mesma bateria suicida da CPS-1, mas a comunidade desenvolveu técnicas para ressuscitar as placas mortas, salvando centenas de máquinas que seriam perdidas para sempre.",
     games: [
       { title: "Street Fighter Alpha 3", year: "1998", file: "sfa3" },
@@ -522,7 +522,7 @@ const PLATFORMS = [
     decade: "90s",
     maker: "Capcom",
     cores: ["fbneo"],
-    img: "assets/cps3.png",
+    img: "assets/cps3.avif",
     desc: "O ápice absoluto da animação 2D feita à mão na indústria. Base do lendário Street Fighter III e JoJo's Bizarre Adventure, o hardware CPS-3 entregou movimentos fluídos que parecem desenhos animados em alta definição. É o testamento final da perfeição artística e mecânica em pixel art antes da transição definitiva da indústria para os polígonos 3D. Curiosidade: a Capcom lançou apenas seis jogos para a CPS-3 — o hardware era tão caro e exclusivo que nunca foi amplamente adotado, tornando-o um dos sistemas de arcade mais raros e cobiçados por colecionadores.",
     games: [
       { title: "Street Fighter III: 3rd Strike", year: "1999", file: "sfiii3" },
@@ -540,7 +540,7 @@ const PLATFORMS = [
     decade: "90s",
     maker: "SNK",
     cores: ["fbneo"],
-    img: "assets/neogeo.png",
+    img: "assets/neogeo.avif",
     desc: "O sistema de arcade mais icônico de todos os tempos, o Neo Geo MVS permitia que os donos de fliperamas trocassem cartuchos em uma mesma placa, revolucionando o mercado. Com um hardware poderoso que entregava sprites enormes e cores vibrantes, tornou-se sinônimo de luxo e qualidade nos anos 90. Lar de franquias imortais como The King of Fighters, Metal Slug e Samurai Shodown, ele oferecia a experiência 'arcade perfect' que todos os jogadores da época desejavam ter em suas salas. Curiosidade: a versão doméstica Neo Geo AES custava $649 em 1990 — equivalente a mais de $1.400 hoje — tornando-o o console mais caro já lançado para o consumidor final.",
     games: [
       { title: "Metal Slug", year: "1996", file: "mslug" },
