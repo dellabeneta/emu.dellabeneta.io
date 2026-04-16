@@ -321,7 +321,6 @@ const PLATFORMS = [
       { title: "Mega Man Battle Network 6: Falzar", year: "2005", file: "mega-man-battle-network-6-cybeast-falzar.gba" },
       { title: "Mega Man Zero", year: "2002", file: "mega-man-zero.gba" },
       { title: "Metroid: Zero Mission", year: "2004", file: "metroid-zero-mission.gba" },
-      { title: "Pokémon FireRed", year: "2004", file: "pokemon-firered-version.gba" },
       { title: "Pokémon LeafGreen", year: "2004", file: "pokemon-leafgreen-version.gba" },
       { title: "Pokémon Ruby", year: "2002", file: "pokemon-ruby-version.gba" },
       { title: "Pokémon Sapphire", year: "2002", file: "pokemon-sapphire-version.gba" },
