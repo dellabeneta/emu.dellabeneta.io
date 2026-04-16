@@ -871,7 +871,7 @@ function selectPlatform(idx) {
   renderGameList(p.games || []);
 
   const firstItem = document.querySelector('.game-item');
-  if (firstItem) firstItem.click();
+  if (firstItem && !window.matchMedia('(max-width: 932px)').matches) firstItem.click();
 
   const gSearch = document.getElementById('game-search');
   if (gSearch) {
@@ -885,9 +885,12 @@ function selectPlatform(idx) {
   detailPanel.classList.add('loaded');
   // detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Centraliza o item selecionado no carrossel sempre que possível
-  const maxScroll = Math.max(0, filtered.length - VISIBLE);
-  carOffset = Math.max(0, Math.min(idx - Math.floor(VISIBLE / 2), maxScroll));
+  // Desktop: centraliza o item selecionado no carrossel (navegação por teclado)
+  // Mobile: não recentaliza — o drag é livre e o carrossel não briga com o toque
+  if (!window.matchMedia('(max-width: 932px)').matches) {
+    const maxScroll = Math.max(0, filtered.length - VISIBLE);
+    carOffset = Math.max(0, Math.min(idx - Math.floor(VISIBLE / 2), maxScroll));
+  }
 
   syncNav();
 }
@@ -1056,10 +1059,18 @@ function init() {
       localStorage.removeItem('retroVault_selectedGameIdx');
     }
 
-    // Inicializa o catálogo de forma robusta
-    selectPlatform(activeIdx);
-    updateUI();
-    buildCarousel();
+    // Inicializa o catálogo
+    if (window.matchMedia('(max-width: 932px)').matches) {
+      // Mobile: começa sem seleção — usuário desliza e toca para escolher
+      activeIdx = null;
+      updateUI();
+      buildCarousel();
+      detailInner.innerHTML = '<div class="detail-placeholder" data-i18n="placeholder">' + translations[currentLang].placeholder + '</div>';
+    } else {
+      selectPlatform(activeIdx);
+      updateUI();
+      buildCarousel();
+    }
     
     // Força um evento de resize para garantir que os cálculos de largura (clientWidth) ocorram
     window.dispatchEvent(new Event('resize'));
@@ -1095,6 +1106,19 @@ function launchGame() {
   overlay.style.display = 'flex';
   bootScreen.style.opacity = '1';
   bootScreen.style.display = 'flex';
+
+  // Mobile: tap na tela revela/esconde o botão de sair
+  if (window.matchMedia('(max-width: 932px)').matches) {
+    const exitBtn = document.getElementById('exit-emulator');
+    overlay.addEventListener('click', function toggleExit(e) {
+      if (e.target === exitBtn || exitBtn.contains(e.target)) return;
+      exitBtn.classList.toggle('visible');
+      clearTimeout(exitBtn._hideTimer);
+      if (exitBtn.classList.contains('visible')) {
+        exitBtn._hideTimer = setTimeout(() => exitBtn.classList.remove('visible'), 3000);
+      }
+    });
+  }
 
   // Canvas noise
   const bootCanvas = document.getElementById('boot-canvas');
@@ -1236,6 +1260,147 @@ function closeEmulator() {
   // Reinicia a página (única forma 100% garantida de matar o AudioContext órfão)
   window.location.reload();
 }
+
+// ===== TOUCH: DRAG FÍSICO COM INÉRCIA NO CARROSSEL =====
+(function() {
+  const container = document.getElementById('carousel-container');
+
+  let startX = 0;
+  let startY = 0;
+  let baseTranslate = 0;   // translateX em px no momento do toque
+  let cachedStep = 0;      // largura do card + gap — cacheada no touchstart
+  let isDragging = false;
+  let isHorizontal = null;
+  let lastX = 0;
+  let lastTime = 0;
+  let velocity = 0;
+  let pendingX = 0;
+  let rafPending = false;
+
+  function readCurrentTranslate() {
+    const m = track.style.transform.match(/translateX\((-?[\d.]+)px\)/);
+    return m ? parseFloat(m[1]) : -(carOffset * cachedStep - 16);
+  }
+
+  container.addEventListener('touchstart', e => {
+    cachedStep = getCardStep();           // lê o DOM uma única vez
+    startX     = e.touches[0].clientX;
+    startY     = e.touches[0].clientY;
+    lastX      = startX;
+    lastTime   = Date.now();
+    baseTranslate = readCurrentTranslate();
+    pendingX      = baseTranslate;
+    isDragging    = false;
+    isHorizontal  = null;
+    velocity      = 0;
+    track.style.transition = 'none';     // congela transição imediatamente
+  }, { passive: true });
+
+  container.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+
+    // Decide direção dominante na primeira movimentação
+    if (isHorizontal === null && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
+      isHorizontal = Math.abs(dx) >= Math.abs(dy);
+    }
+    if (!isHorizontal) return;
+
+    e.preventDefault();
+    isDragging = true;
+
+    // Velocidade (pixels/ms)
+    const now = Date.now();
+    const dt  = now - lastTime;
+    if (dt > 0) velocity = (e.touches[0].clientX - lastX) / dt;
+    lastX    = e.touches[0].clientX;
+    lastTime = now;
+
+    // Movimento limitado às bordas do carrossel
+    const maxOffset  = Math.max(0, filtered.length - VISIBLE);
+    const minTranslate = -(maxOffset * cachedStep - 16); // último card
+    const maxTranslate = 16;                             // primeiro card
+    pendingX = Math.max(minTranslate, Math.min(maxTranslate, baseTranslate + dx));
+
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(() => {
+        track.style.transform = `translateX(${pendingX}px)`;
+        rafPending = false;
+      });
+    }
+  }, { passive: false });
+
+  container.addEventListener('touchend', () => {
+    if (!isHorizontal || !isDragging) return;
+
+    // Projeta posição final com inércia
+    const projected    = pendingX + velocity * 200;
+    const maxOffset    = Math.max(0, filtered.length - VISIBLE);
+    // Converte translateX de volta para carOffset: translateX = -(carOffset * step - 16)
+    const rawOffset    = -(projected - 16) / cachedStep;
+    const targetOffset = Math.round(Math.max(0, Math.min(rawOffset, maxOffset)));
+
+    carOffset = targetOffset;
+    track.style.transition = '';         // reativa transição para o snap final
+    applyCarouselOffset();
+    updateNav();
+
+    isDragging = false;
+  }, { passive: true });
+})();
+
+// ===== MOBILE: BOTTOM SHEET DE CONFIRMAÇÃO =====
+(function() {
+  const backdrop = document.getElementById('mobile-sheet-backdrop');
+  const sheet    = document.getElementById('mobile-sheet');
+  const titleEl  = document.getElementById('sheet-game-title');
+  const metaEl   = document.getElementById('sheet-game-meta');
+  const playBtn  = document.getElementById('sheet-play');
+  const cancelBtn= document.getElementById('sheet-cancel');
+
+  function openSheet(game, platform) {
+    titleEl.textContent = game.displayTitle || game.title;
+    metaEl.textContent  = `${platform.name} · ${game.year}`;
+    backdrop.classList.add('open');
+    sheet.classList.add('open');
+  }
+
+  function closeSheet() {
+    sheet.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+
+  // Abre o sheet ao tocar num jogo (mobile)
+  document.addEventListener('click', e => {
+    if (!window.matchMedia('(max-width: 932px)').matches) return;
+    const item = e.target.closest('.game-item');
+    if (!item) return;
+
+    e.stopPropagation();
+    const platform = filtered[activeIdx];
+    if (!platform) return;
+
+    const title = item.getAttribute('data-title');
+    const gameIdx = platform.games.findIndex(g => g.title === title);
+    if (gameIdx === -1) return;
+
+    selectedGameIdx = gameIdx;
+    openSheet(platform.games[gameIdx], platform);
+  }, true);
+
+  playBtn.addEventListener('click', () => { closeSheet(); launchGame(); });
+  cancelBtn.addEventListener('click', closeSheet);
+  backdrop.addEventListener('click', closeSheet);
+})();
+
+// ===== GAMEPAD: auto-oculta controles touch quando gamepad conectado =====
+window.addEventListener('gamepadconnected', () => {
+  document.body.classList.add('has-gamepad');
+});
+window.addEventListener('gamepaddisconnected', () => {
+  document.body.classList.remove('has-gamepad');
+});
 
 // Listeners para os botões novos
 document.addEventListener('click', e => {
