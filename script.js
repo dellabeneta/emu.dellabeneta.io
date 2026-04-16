@@ -1221,6 +1221,7 @@ function launchGame() {
   window.EJS_showMenu = false;
   window.EJS_core_config = false;
   window.EJS_mouse = false;
+  window.EJS_threads = false;
   window.EJS_Buttons = {}; // Remove todos os botões da barra (Save, Load, etc)
   window.EJS_Settings = {}; // Remove o acesso às configurações
 
