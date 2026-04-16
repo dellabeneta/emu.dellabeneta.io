@@ -1190,7 +1190,7 @@ function launchGame() {
     'cps3': 'fbneo',
     'neogeo': 'fbneo',
     'fbneo': 'fbneo',
-    'N64': 'mupen64plus'
+    'N64': 'n64'
   };
 
   const extMap = {
@@ -1204,7 +1204,7 @@ function launchGame() {
     'psx': 'chd',
     'genesis_plus_gx': 'sms',
     'gambatte': 'gb',
-    'mupen64plus': 'z64'
+    'n64': 'z64'
   };
   // 2. Configuração do EmulatorJS (Método Global Infallível)
   const currentCore = coreMap[platform.abbr] || 'snes';
