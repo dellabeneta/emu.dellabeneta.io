@@ -307,6 +307,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   height: 198px;
 }
@@ -544,7 +545,7 @@ main {
   padding: 0.4rem 0.75rem;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -577,7 +578,7 @@ main {
   color: var(--green3);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s, color 0.2s, text-shadow 0.2s;
+  transition: none;
 }
 
 .game-item.selected .game-launch {
@@ -593,7 +594,7 @@ main {
 .game-year {
   font-size: 0.7rem;
   opacity: 0.5;
-  transition: opacity 0.2s;
+  transition: none;
 }
 
 .game-item.selected .game-year {

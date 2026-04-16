@@ -80,8 +80,8 @@ const PLATFORMS = [
       { title: "Breath of Fire", year: "1993", file: "breath-of-fire" },
       { title: "Chrono Trigger", year: "1995", file: "chrono-trigger" },
       { title: "Contra III: The Alien Wars", year: "1992", file: "contra-iii-the-alien-wars" },
-      { title: "Donkey Kong Country 2: Diddy's Kong Quest", displayTitle: "Donkey Kong Country 2: Diddy's Kong<br>Quest", year: "1995", file: "donkey-kong-country-2-diddy's-kong-quest" },
-      { title: "Donkey Kong Country 3: Dixie Kong's Double Trouble!", year: "1996", file: "donkey-kong-country-3-dixie-kong's-double-trouble!" },
+      { title: "Donkey Kong Country 2: Diddy's Kong Quest", displayTitle: "Donkey Kong Country 2", year: "1995", file: "donkey-kong-country-2-diddy's-kong-quest" },
+      { title: "Donkey Kong Country 3: Dixie Kong's Double Trouble!", displayTitle: "Donkey Kong Country 3", year: "1996", file: "donkey-kong-country-3-dixie-kong's-double-trouble!" },
       { title: "Donkey Kong Country", year: "1994", file: "donkey-kong-country" },
       { title: "EarthBound", year: "1994", file: "earthbound" },
       { title: "Final Fantasy III", year: "1994", file: "final-fantasy-iii" },
@@ -349,16 +349,13 @@ const PLATFORMS = [
       { title: "Azure Dreams", year: "1997", file: "azure-dreams.pbp" },
       { title: "Castlevania: Symphony of the Night", year: "1997", file: "castlevania-symphony-of-the-night.chd" },
       { title: "Chocobo's Dungeon 2", year: "1998", file: "chocobos-dungeon-2.chd" },
-      { title: "Chrono Cross", year: "1999", file: "chrono-cross.pbp" },
       { title: "Crash Bandicoot: Warped", year: "1998", file: "crash-bandicoot-warped.pbp" },
       { title: "Crash Team Racing", year: "1999", file: "ctr-crash-team-racing.chd" },
       { title: "Einhänder", year: "1997", file: "einhaender.pbp" },
-      { title: "Final Fantasy IX", year: "2000", file: "final-fantasy-ix.m3u" },
       { title: "Intelligent Qube", year: "1997", file: "intelligent-cube.pbp" },
       { title: "Klonoa: Door to Phantomile", year: "1997", file: "klonoa-door-to-phantomile.pbp" },
       { title: "Legacy of Kain: Soul Reaver", year: "1999", file: "legacy-of-kain-soul-reaver.chd" },
       { title: "Mega Man X4", year: "1997", file: "mega-man-x4.chd" },
-      { title: "Metal Gear Solid", year: "1998", file: "metal-gear-solid.m3u" },
       { title: "Oddworld: Abe's Oddysee", year: "1997", file: "oddworld-abes-oddysee.pbp" },
       { title: "R-Type Delta", year: "1998", file: "r-type-delta.pbp" },
       { title: "R4: Ridge Racer Type 4", year: "1998", file: "r4-ridge-racer-type-4.chd" },
@@ -527,7 +524,7 @@ const PLATFORMS = [
     games: [
       { title: "Street Fighter III: 3rd Strike", year: "1999", file: "sfiii3" },
       { title: "Street Fighter III: 2nd Impact", year: "1997", file: "sfiii2" },
-      { title: "Street Fighter III: New Gen", year: "1997", file: "sfiii" },
+      { title: "Street Fighter III: New Generation", year: "1997", file: "sfiii" },
       { title: "JoJo's Bizarre Adventure", year: "1998", file: "jojo" },
       { title: "JoJo: Heritage for Future", year: "1999", file: "jojoba" }
     ]
@@ -968,13 +965,20 @@ if (searchEl) searchEl.addEventListener('input', applyFilters);
 
 // ===== KEYBOARD NAV =====
 let lastKeyTime = 0;
-const KEY_THROTTLE = 180; 
+const KEY_THROTTLE = 80;
 let selectedGameIdx = 0;
+let isEmulatorRunning = false;
 
 document.addEventListener('keydown', e => {
   // Bloqueio do TAB sempre ativo
   if (e.key === 'Tab') {
     e.preventDefault();
+    return;
+  }
+
+  // Com emulador aberto, só ESC é permitido
+  if (isEmulatorRunning) {
+    if (e.key === 'Escape') closeEmulator();
     return;
   }
 
@@ -1078,7 +1082,8 @@ window.addEventListener('load', init);
 // ===== EMULATOR INTEGRATION =====
 
 function launchGame() {
-  if (activeIdx === null) return;
+  if (activeIdx === null || isEmulatorRunning) return;
+  isEmulatorRunning = true;
   const platform = filtered[activeIdx];
   const selectedGame = platform.games[selectedGameIdx];
   if (!selectedGame) return;
@@ -1222,6 +1227,7 @@ function launchGame() {
 }
 
 function closeEmulator() {
+  isEmulatorRunning = false;
   console.log("Salvando estado e reiniciando sistema para limpeza total...");
   // Salva onde o usuário estava
   localStorage.setItem('retroVault_activeIdx', activeIdx);
