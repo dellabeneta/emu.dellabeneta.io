@@ -375,6 +375,21 @@ const PLATFORMS = [
     ]
   },
   {
+    name: "Nintendo 64",
+    fullName: "Nintendo 64",
+    abbr: "N64",
+    era: "1996",
+    decade: "90s",
+    maker: "Nintendo",
+    cores: ["mupen64plus"],
+    img: "assets/n64.avif",
+    desc: "O Nintendo 64 foi a última grande aposta nos cartuchos numa era já dominada pelos CDs, entregando jogos sem loading times e com qualidade gráfica impressionante para a época. Berço de títulos que definiram o que seria o game design 3D moderno: Ocarina of Time, Mario 64 e GoldenEye moldaram como pensamos em jogos até hoje. Curiosidade: o cartucho do Mario 64 custava o dobro de um jogo de PlayStation, mas a Nintendo apostava que a ausência de loading compensaria — e para milhões de fãs, compensou.",
+    games: [
+      { title: "Mario Kart 64", year: "1996", file: "mario-kart-64.z64" },
+      { title: "The Legend of Zelda: Ocarina of Time", year: "1998", file: "legend-of-zelda-the-ocarina-of-time.z64" }
+    ]
+  },
+  {
     name: "Arcade Classics",
     fullName: "Arcade Classics (FBNeo)",
     abbr: "fbneo",
@@ -601,12 +616,13 @@ const desc_en = {
   "Game Boy Color": "Released in 1998, the Game Boy Color brought vibrant hues and a faster processor while maintaining full backward compatibility. It allowed for more detailed worlds in classics like Pokémon Gold/Silver and the Zelda Oracle series. It served as the perfect technical bridge between the initial 8-bit simplicity and the 32-bit sophistication of the Advance generation.",
   "Game Boy Advance": "The GBA brought SNES-quality power to your pocket, being the ultimate 32-bit sanctuary for high-fidelity pixel art. It delivered flawless ports and masterpieces like Metroid Fusion and Castlevania: Aria of Sorrow on its widescreen display. A legendary machine loved by 2D purists for offering deep, cinematic gaming experiences anywhere, anytime.",
   "PlayStation 1": "The PlayStation 1 changed history by mainstreaming 3D polygons and the CD-ROM, ending home cartridge supremacy. Cinematic franchises like Final Fantasy VII and Metal Gear Solid defined its identity and mature storytelling. With over 100 million units sold, it consolidated Sony as the new global giant of the gaming industry.",
-  "Sega Mega Drive": "The Mega Drive brought 'attitude', speed, and Yamaha FM audio, brilliantly challenging Nintendo's hegemony in the 90s. Home of Sonic, Streets of Rage, and Golden Axe, it consolidated an urban visual identity with its famous 'Blast Processing'. Its robust architecture allowed for almost arcade-perfect ports, defining one of the most competitive eras in history.",
-  "Sega Master System": "The Sega Master System stood out with vibrant colors and a superior video chip, becoming an absolute legend in Brazil and Europe. It brought arcade power home with ports like After Burner and OutRun, while giving life to heroes like Alex Kidd and Phantasy Star. A durable system that paved the way for the innovation that still defines Sega's identity today.",
-  "Capcom Play System 1": "The CPS-1 was the foundation of Capcom's arcade empire, setting the action gold standard in the late 80s. Powerful hardware that gave birth to Street Fighter II and Final Fight with massive sprites and complex animations. With Yamaha sound and vibrant visuals, it proved Capcom was the absolute queen of arcade action and the blueprint for future fighting games.",
-  "Capcom Play System 2": "Famous for Q-Sound and colored armored cases, the CPS-2 dominated 90s arcades with Street Fighter Alpha and Darkstalkers. Capable of managing hundreds of colors and fluid sprites, it was the stage for the first explosive Marvel vs. Capcom crossovers. A system that elevated audio-visual fidelity, becoming an immortal icon of the fighting game scene.",
-  "Capcom Play System 3": "The absolute pinnacle of hand-drawn 2D animation in the industry. Base of the legendary Street Fighter III and JoJo's Bizarre Adventure, the CPS-3 hardware delivered fluid motions that look like high-definition cartoons. It is the final testament to artistic and mechanical perfection in pixel art before the industry moved to 3D polygons.",
+  "Mega Drive":"The Mega Drive brought 'attitude', speed, and Yamaha FM audio, brilliantly challenging Nintendo's hegemony in the 90s. Home of Sonic, Streets of Rage, and Golden Axe, it consolidated an urban visual identity with its famous 'Blast Processing'. Its robust architecture allowed for almost arcade-perfect ports, defining one of the most competitive eras in history.",
+  "Master System":"The Sega Master System stood out with vibrant colors and a superior video chip, becoming an absolute legend in Brazil and Europe. It brought arcade power home with ports like After Burner and OutRun, while giving life to heroes like Alex Kidd and Phantasy Star. A durable system that paved the way for the innovation that still defines Sega's identity today.",
+  "Capcom CPS-1":"The CPS-1 was the foundation of Capcom's arcade empire, setting the action gold standard in the late 80s. Powerful hardware that gave birth to Street Fighter II and Final Fight with massive sprites and complex animations. With Yamaha sound and vibrant visuals, it proved Capcom was the absolute queen of arcade action and the blueprint for future fighting games.",
+  "Capcom CPS-2":"Famous for Q-Sound and colored armored cases, the CPS-2 dominated 90s arcades with Street Fighter Alpha and Darkstalkers. Capable of managing hundreds of colors and fluid sprites, it was the stage for the first explosive Marvel vs. Capcom crossovers. A system that elevated audio-visual fidelity, becoming an immortal icon of the fighting game scene.",
+  "Capcom CPS-3":"The absolute pinnacle of hand-drawn 2D animation in the industry. Base of the legendary Street Fighter III and JoJo's Bizarre Adventure, the CPS-3 hardware delivered fluid motions that look like high-definition cartoons. It is the final testament to artistic and mechanical perfection in pixel art before the industry moved to 3D polygons.",
   "Neo Geo MVS": "The Neo Geo MVS revolutionized the market by allowing game swaps on the same board, becoming synonymous with arcade luxury. With hardware delivering colorful sprites and massive sound, it was the home of King of Fighters and Metal Slug. It offered the 'arcade perfect' experience that every gamer from that decade desired to have in their room.",
+  "Nintendo 64": "The Nintendo 64 was the last great bet on cartridges in a CD-dominated era, delivering load-time-free games with impressive 3D visuals. The birthplace of titles that defined modern 3D game design: Ocarina of Time, Mario 64, and GoldenEye shaped how we think about games to this day. Its bold hardware choices made it a cult icon beloved by every gamer who grew up in the late 90s.",
   "Arcade Classics": "A massive portal to the golden age of coin-ops under the powerful FinalBurn Neo engine. It brings together hits from Konami, Midway, and Capcom, covering 80s pioneers and complex cooperative beat 'em ups like The Simpsons. This system preserves every pixel and musical note, honoring the high-octane legacy of the original arcade machines.",
 };
 
@@ -1173,9 +1189,8 @@ function launchGame() {
     'cps2': 'fbneo',
     'cps3': 'fbneo',
     'neogeo': 'fbneo',
-    'TUNIT': 'fbneo',
     'fbneo': 'fbneo',
-    'DOS': 'dos'
+    'N64': 'mupen64plus'
   };
 
   const extMap = {
@@ -1188,7 +1203,8 @@ function launchGame() {
     'sms': 'sms',
     'psx': 'chd',
     'genesis_plus_gx': 'sms',
-    'gambatte': 'gb'
+    'gambatte': 'gb',
+    'mupen64plus': 'z64'
   };
   // 2. Configuração do EmulatorJS (Método Global Infallível)
   const currentCore = coreMap[platform.abbr] || 'snes';
