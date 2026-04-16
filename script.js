@@ -1107,11 +1107,20 @@ function launchGame() {
   bootScreen.style.opacity = '1';
   bootScreen.style.display = 'flex';
 
+  // iOS Safari: desbloqueia AudioContext dentro do gesto do usuário
+  try {
+    const tmpAudio = new (window.AudioContext || window.webkitAudioContext)();
+    tmpAudio.resume().then(() => tmpAudio.close());
+  } catch(e) {}
+
   // Mobile: tap na tela revela/esconde o botão de sair
+  // Não intercepta toques no container do emulador (para não bloquear "Click to resume")
   if (window.matchMedia('(max-width: 932px)').matches) {
     const exitBtn = document.getElementById('exit-emulator');
+    const emuContainer = document.getElementById('emulator-container');
     overlay.addEventListener('click', function toggleExit(e) {
       if (e.target === exitBtn || exitBtn.contains(e.target)) return;
+      if (emuContainer.contains(e.target)) return; // deixa passar para o EmulatorJS
       exitBtn.classList.toggle('visible');
       clearTimeout(exitBtn._hideTimer);
       if (exitBtn.classList.contains('visible')) {
