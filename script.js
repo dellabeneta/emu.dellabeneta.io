@@ -1244,7 +1244,17 @@ function launchGame() {
   };
 
   if (isMobile) {
-    // Mobile: injeta imediatamente (gesto do usuário ainda válido = AudioContext desbloqueado)
+    // iOS Safari: cria e desbloqueia AudioContext dentro do gesto e passa para o EmulatorJS
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const audioCtx = new AudioCtx();
+        audioCtx.resume();
+        window.EJS_AudioContext = audioCtx;
+      }
+    } catch(e) {}
+
+    // Mobile: injeta imediatamente (gesto do usuário ainda válido)
     emuContainer.classList.add('visible');
     injectLoader();
   } else {
