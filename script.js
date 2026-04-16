@@ -1107,20 +1107,15 @@ function launchGame() {
   bootScreen.style.opacity = '1';
   bootScreen.style.display = 'flex';
 
-  // iOS Safari: desbloqueia AudioContext dentro do gesto do usuário
-  try {
-    const tmpAudio = new (window.AudioContext || window.webkitAudioContext)();
-    tmpAudio.resume().then(() => tmpAudio.close());
-  } catch(e) {}
+  const isMobile = window.matchMedia('(max-width: 932px)').matches;
 
   // Mobile: tap na tela revela/esconde o botão de sair
-  // Não intercepta toques no container do emulador (para não bloquear "Click to resume")
-  if (window.matchMedia('(max-width: 932px)').matches) {
+  if (isMobile) {
     const exitBtn = document.getElementById('exit-emulator');
     const emuContainer = document.getElementById('emulator-container');
     overlay.addEventListener('click', function toggleExit(e) {
       if (e.target === exitBtn || exitBtn.contains(e.target)) return;
-      if (emuContainer.contains(e.target)) return; // deixa passar para o EmulatorJS
+      if (emuContainer.contains(e.target)) return;
       exitBtn.classList.toggle('visible');
       clearTimeout(exitBtn._hideTimer);
       if (exitBtn.classList.contains('visible')) {
@@ -1129,33 +1124,36 @@ function launchGame() {
     });
   }
 
-  // Canvas noise
+  // Desktop: animação de boot
   const bootCanvas = document.getElementById('boot-canvas');
   let noiseRaf;
-  if (bootCanvas) {
-    const ctx = bootCanvas.getContext('2d');
-    bootCanvas.width  = bootCanvas.offsetWidth;
-    bootCanvas.height = bootCanvas.offsetHeight;
-    function drawNoise() {
-      const w = bootCanvas.width, h = bootCanvas.height;
-      const imageData = ctx.createImageData(w, h);
-      const data = imageData.data;
-      for (let i = 0; i < data.length; i += 4) {
-        const v = Math.random() * 255 | 0;
-        data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 255;
+  if (!isMobile) {
+    if (bootCanvas) {
+      const ctx = bootCanvas.getContext('2d');
+      bootCanvas.width  = bootCanvas.offsetWidth;
+      bootCanvas.height = bootCanvas.offsetHeight;
+      function drawNoise() {
+        const w = bootCanvas.width, h = bootCanvas.height;
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const v = Math.random() * 255 | 0;
+          data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 255;
+        }
+        ctx.putImageData(imageData, 0, 0);
+        noiseRaf = requestAnimationFrame(drawNoise);
       }
-      ctx.putImageData(imageData, 0, 0);
-      noiseRaf = requestAnimationFrame(drawNoise);
+      drawNoise();
     }
-    drawNoise();
-  }
-
-  // Fases do boot
-  const bootLogo = document.querySelector('.boot-logo');
-  if (bootLogo) {
-    bootLogo.className = 'boot-logo hidden';
-    setTimeout(() => { bootLogo.className = 'boot-logo tuning'; }, 800);
-    setTimeout(() => { bootLogo.className = 'boot-logo stable'; }, 2100);
+    const bootLogo = document.querySelector('.boot-logo');
+    if (bootLogo) {
+      bootLogo.className = 'boot-logo hidden';
+      setTimeout(() => { bootLogo.className = 'boot-logo tuning'; }, 800);
+      setTimeout(() => { bootLogo.className = 'boot-logo stable'; }, 2100);
+    }
+  } else {
+    // Mobile: esconde boot screen imediatamente
+    bootScreen.style.display = 'none';
   }
 
 
@@ -1239,25 +1237,26 @@ function launchGame() {
   console.log("CORE:", window.EJS_core);
   if (window.EJS_biosUrl) console.log("BIOS:", window.EJS_biosUrl);
 
-  // Injeção Dinâmica do Script (Atrasada em 2s para garantir o silêncio do branding)
-  setTimeout(() => {
-    console.log("Injetando motor do emulador em background (STABLE)...");
+  const injectLoader = () => {
     const s = document.createElement('script');
     s.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
     document.body.appendChild(s);
-  }, 2000);
+  };
 
-  // 3. Simulação de Boot (3 Segundos de Branding)
-
-  setTimeout(() => {
-    if (noiseRaf) cancelAnimationFrame(noiseRaf);
-    bootScreen.style.opacity = '0';
+  if (isMobile) {
+    // Mobile: injeta imediatamente (gesto do usuário ainda válido = AudioContext desbloqueado)
     emuContainer.classList.add('visible');
-
+    injectLoader();
+  } else {
+    // Desktop: aguarda animação de boot
+    setTimeout(injectLoader, 2000);
     setTimeout(() => {
-      bootScreen.style.display = 'none';
-    }, 800);
-  }, 3000);
+      if (noiseRaf) cancelAnimationFrame(noiseRaf);
+      bootScreen.style.opacity = '0';
+      emuContainer.classList.add('visible');
+      setTimeout(() => { bootScreen.style.display = 'none'; }, 800);
+    }, 3000);
+  }
 }
 
 function closeEmulator() {
