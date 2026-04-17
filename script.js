@@ -123,6 +123,7 @@ const PLATFORMS = [
       { title: "The Legend of Zelda: A Link to the Past", year: "1991", file: "the-legend-of-zelda-a-link-to-the-past" },
       { title: "The Lion King", year: "1994", file: "the-lion-king" },
       { title: "Ultimate Mortal Kombat 3", year: "1994", file: "ultimate-mortal-kombat-3" },
+      { title: "WWF WrestleMania: The Arcade Game", year: "1995", file: "wwf-wrestlemania-the-arcade-game" },
       { title: "Zombies Ate My Neighbors", year: "1993", file: "zombies-ate-my-neighbors" }
 
     ]
