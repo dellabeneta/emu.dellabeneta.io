@@ -539,8 +539,7 @@ const PLATFORMS = [
       { title: "Street Fighter III: 3rd Strike", year: "1999", file: "sfiii3" },
       { title: "Street Fighter III: 2nd Impact", year: "1997", file: "sfiii2" },
       { title: "Street Fighter III: New Generation", year: "1997", file: "sfiii" },
-      { title: "JoJo's Bizarre Adventure", year: "1998", file: "jojo" },
-      { title: "JoJo: Heritage for Future", year: "1999", file: "jojoba" }
+      { title: "JoJo's Bizarre Adventure", year: "1998", file: "jojo" }
     ]
   },
   {
