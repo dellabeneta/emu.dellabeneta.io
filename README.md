@@ -73,36 +73,63 @@ Frontend       → HTML + CSS + JavaScript (sem frameworks, sem build)
 Emulação       → EmulatorJS via CDN (cdn.emulatorjs.org)
 Hospedagem     → AWS S3 (static website hosting)
 CDN / HTTPS    → Cloudflare (proxy + cache + certificado)
-CI/CD          → GitHub Actions → sync automático para o S3 no push para main
-Segurança      → Bucket policy restrito aos IPs da Cloudflare (sem acesso direto ao S3)
+CI/CD          → GitHub Actions (test → deploy → smoke)
+Segurança      → Bucket policy + WAF + SRI + Security Headers
 ```
 
 ### Arquitetura
 
 ```
                     ┌─────────────┐
-    usuário ──────► │  Cloudflare │ ◄── cache + HTTPS + proteção
+    usuário ──────► │  Cloudflare │ ◄── cache + HTTPS + WAF + headers
                     └──────┬──────┘
                            │ apenas IPs Cloudflare
                     ┌──────▼──────┐
-                    │   AWS S3    │ ← bucket público restrito
+                    │   AWS S3    │ ← bucket restrito
                     │             │   index.html / script.js / style.css
                     │  assets/    │   imagens das plataformas
                     │  roms/      │   arquivos de jogo
                     └─────────────┘
 
-    GitHub ──push──► Actions ──sync──► S3 ──► Cloudflare purge cache
+    GitHub ──push──► Actions: test ──► deploy ──► smoke
 ```
 
 ### CI/CD
 
-O workflow `.github/workflows/deploy-s3.yml` faz:
-1. Checkout do repositório
-2. Configura credenciais AWS via secrets
-3. `aws s3 sync` dos arquivos de código para o bucket (excluindo ROMs e assets)
-4. Purge automático do cache da Cloudflare
+O workflow `.github/workflows/deploy-emu.yml` executa 3 jobs em sequência:
+
+| Job | O que faz | Condição |
+|---|---|---|
+| `test` | Roda todos os testes | Sempre ao push em `main` |
+| `deploy` | Envia os 4 arquivos ao S3 + purge seletivo Cloudflare | Só se `test` passar |
+| `smoke` | Valida a infra ao vivo | Só após `deploy` |
+
+O purge de cache é **seletivo** — invalida apenas `index.html`, `script.js`, `style.css` e `favicon.ico`, preservando o cache de ROMs e assets na Cloudflare.
 
 As credenciais AWS e Cloudflare são gerenciadas via GitHub Secrets, sem nenhuma informação sensível no código.
+
+---
+
+## Testes
+
+```
+tests/
+├── infra/
+│   ├── security.sh     # segurança Cloudflare (headers, hotlink protection)
+│   └── catalog.js      # todas as ROMs referenciadas existem no disco
+└── unit/
+    ├── i18n.js         # traduções PT/EN sincronizadas
+    └── platforms.js    # estrutura obrigatória do PLATFORMS[]
+```
+
+Para rodar localmente:
+
+```bash
+bash tests/infra/security.sh
+node tests/infra/catalog.js
+node tests/unit/i18n.js
+node tests/unit/platforms.js
+```
 
 ---
 
@@ -110,15 +137,23 @@ As credenciais AWS e Cloudflare são gerenciadas via GitHub Secrets, sem nenhuma
 
 ```
 emu.dellabeneta.io/
-├── index.html          # estrutura da interface
-├── style.css           # tema CRT cyberpunk (verde #00ff88 + âmbar #ffaa00)
-├── script.js           # catálogo PLATFORMS[], lógica, integração EmulatorJS
-├── validate.js         # validação local dos arquivos de ROM
-├── assets/             # imagens das plataformas (hospedado no S3, fora do git)
-├── roms/               # arquivos de jogo (hospedado no S3, fora do git)
+├── index.html              # estrutura da interface
+├── style.css               # tema CRT cyberpunk (verde #00ff88 + âmbar #ffaa00)
+├── script.js               # catálogo PLATFORMS[], lógica, integração EmulatorJS
+├── favicon.ico
+├── sync-s3.sh              # utilitário: sincroniza roms/ e assets/ com o S3
+├── assets/                 # imagens das plataformas (S3, fora do git)
+├── roms/                   # arquivos de jogo (S3, fora do git)
+├── tests/
+│   ├── infra/
+│   │   ├── security.sh
+│   │   └── catalog.js
+│   └── unit/
+│       ├── i18n.js
+│       └── platforms.js
 └── .github/
     └── workflows/
-        └── deploy-s3.yml
+        └── deploy-emu.yml
 ```
 
 ---
@@ -142,9 +177,26 @@ npx serve .
 
 ---
 
+## Sincronizando ROMs e assets com o S3
+
+ROMs e assets não são versionados no git — vivem diretamente no S3. Para sincronizar após adicionar novos arquivos:
+
+```bash
+bash sync-s3.sh
+```
+
+Requer AWS CLI configurado localmente com as credenciais corretas.
+
+---
+
 ## Segurança
 
-O bucket S3 é público mas com acesso restrito aos IPs da Cloudflare via bucket policy. Requisições diretas ao endpoint do S3 retornam **403 Forbidden** — todo tráfego passa obrigatoriamente pela Cloudflare.
+| Camada | Implementação |
+|---|---|
+| Acesso ao S3 | Bucket policy restrito aos IPs da Cloudflare — requisições diretas ao endpoint S3 retornam **403 Forbidden** |
+| Hotlink protection | WAF Custom Rule na Cloudflare bloqueia qualquer asset servido com `Referer` fora de `dellabeneta.io` — impede que outros sites consumam ROMs, imagens e demais arquivos |
+| Integridade do EmulatorJS | SRI (Subresource Integrity) com hash SHA-256 na tag de carregamento — o browser recusa executar o script se o arquivo do CDN externo for adulterado |
+| Security headers | Response Header Transform Rule na Cloudflare adiciona em todas as respostas: `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` |
 
 ---
 
