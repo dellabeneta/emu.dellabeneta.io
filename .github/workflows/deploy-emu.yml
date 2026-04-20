@@ -14,13 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Unit — estrutura PLATFORMS[]
         run: node tests/unit/platforms.js
 
       - name: Unit — i18n PT/EN
         run: node tests/unit/i18n.js
 
-      - name: Infra — catálogo de ROMs
+      - name: Infra — catálogo de ROMs (valida no S3)
         run: node tests/infra/catalog.js
 
   deploy:
