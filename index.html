@@ -72,11 +72,21 @@
         <span class="beta-badge">BETA</span>
       </div>
       <div class="footer-block footer-keys">
-<div class="key-list">
-          <span class="key-item"><kbd>←</kbd><kbd>→</kbd> plataformas</span>
-          <span class="key-item"><kbd>↑</kbd><kbd>↓</kbd> jogos</span>
-          <span class="key-item"><kbd>Enter</kbd> jogar</span>
-          <span class="key-item"><kbd>J</kbd> buscar jogo</span>
+        <div class="key-list">
+          <span class="key-item"><kbd>←</kbd><kbd>→</kbd> <span data-i18n="footerKeyPlatforms">plataformas</span></span>
+          <span class="key-item"><kbd>↑</kbd><kbd>↓</kbd> <span data-i18n="footerKeyGames">jogos</span></span>
+          <span class="key-item"><kbd>Enter</kbd> <span data-i18n="footerKeyPlay">jogar</span></span>
+          <span class="key-item"><kbd>J</kbd> <span data-i18n="footerKeySearch">buscar jogo</span></span>
+        </div>
+      </div>
+      <div class="footer-block footer-gamepad">
+        <div class="key-list">
+          <button class="key-item footer-joystick-btn" id="joystick-info-btn" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="opacity:0.7;flex-shrink:0">
+              <path d="M17 6H7a6 6 0 0 0 0 12h10a6 6 0 0 0 0-12zm-9 7H7v1a1 1 0 0 1-2 0v-1H4a1 1 0 0 1 0-2h1v-1a1 1 0 0 1 2 0v1h1a1 1 0 0 1 0 2zm6.5 1a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+            </svg>
+            <span data-i18n="footerJoystick">Compatibilidade com Joysticks</span>
+          </button>
         </div>
       </div>
       <div class="footer-block footer-links">
@@ -121,6 +131,17 @@
       <span class="exit-icon">✕</span>
       <span class="exit-text">VOLTAR AO VAULT</span>
     </button>
+  </div>
+
+  <!-- Modal: joystick info -->
+  <div id="joystick-backdrop" role="presentation"></div>
+  <div id="joystick-modal" role="dialog" aria-modal="true" aria-labelledby="joystick-modal-title">
+    <div class="joystick-modal-title" id="joystick-modal-title" data-i18n="joystickModalTitle">JOYSTICK NO BROWSER</div>
+    <div class="joystick-modal-body">
+      <p data-i18n="joystickModalP1"></p>
+      <p data-i18n="joystickModalP2"></p>
+    </div>
+    <button class="joystick-modal-close" id="joystick-modal-close" data-i18n="joystickModalClose">FECHAR</button>
   </div>
 
   <script src="script.js"></script>

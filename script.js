@@ -646,6 +646,15 @@ const translations = {
     era00s: "Anos 2000",
     games: "JOGOS (J)",
     searchGamesPlaceholder: "FILTRAR JOGOS...",
+    footerKeyPlatforms: "plataformas",
+    footerKeyGames: "jogos",
+    footerKeyPlay: "jogar",
+    footerKeySearch: "buscar jogo",
+    footerJoystick: "Compatibilidade com Joysticks",
+    joystickModalTitle: "JOYSTICK NO BROWSER",
+    joystickModalP1: "O site usa a Gamepad API do próprio navegador pra detectar controles — o que significa que ele não faz mágica por conta própria. A regra é simples: se o controle funciona no seu sistema operacional, ele vai funcionar aqui também.",
+    joystickModalP2: "Então antes de achar que o site tá bugado, plugue o controle, abra o painel de controle do seu sistema e confirma que ele aparece lá. No Windows você procura por \"Controladores de jogo\", no Mac vai em Preferências do Sistema. Depois é só jogar.",
+    joystickModalClose: "FECHAR",
     booting: "CARREGANDO SISTEMA..."
   },
   en: {
@@ -667,6 +676,15 @@ const translations = {
     era00s: "00s",
     games: "GAMES (J)",
     searchGamesPlaceholder: "FILTER GAMES...",
+    footerKeyPlatforms: "platforms",
+    footerKeyGames: "games",
+    footerKeyPlay: "play",
+    footerKeySearch: "search game",
+    footerJoystick: "Joystick Compatible",
+    joystickModalTitle: "JOYSTICK IN THE BROWSER",
+    joystickModalP1: "The site uses the browser's native Gamepad API to detect controllers — which means it doesn't do any magic on its own. The rule is simple: if the controller works on your operating system, it'll work here too.",
+    joystickModalP2: "So before assuming the site is broken, plug in your controller, open your system's game controller settings, and confirm it shows up there. On Windows search for \"Game Controllers\", on Mac go to System Preferences. After that, just play.",
+    joystickModalClose: "CLOSE",
     booting: "BOOTING SYSTEM..."
   }
 };
@@ -699,6 +717,31 @@ function updateUI() {
     searchEl.placeholder = translations[currentLang][searchEl.getAttribute('data-i18n-placeholder')];
   }
 }
+
+// Joystick info modal
+(function () {
+  const btn      = document.getElementById('joystick-info-btn');
+  const backdrop = document.getElementById('joystick-backdrop');
+  const modal    = document.getElementById('joystick-modal');
+  const closeBtn = document.getElementById('joystick-modal-close');
+
+  function openModal() {
+    backdrop.classList.add('open');
+    modal.classList.add('open');
+    closeBtn.focus();
+  }
+  function closeModal() {
+    backdrop.classList.remove('open');
+    modal.classList.remove('open');
+  }
+
+  btn.addEventListener('click', openModal);
+  backdrop.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
 
 document.getElementById('lang-toggle').addEventListener('click', (e) => {
   if (e.target.tagName === 'BUTTON') {

@@ -832,6 +832,97 @@ kbd {
   color: var(--green3);
 }
 
+/* === FOOTER JOYSTICK BUTTON === */
+.footer-joystick-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.93rem;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px dashed var(--border2);
+  transition: color 0.2s, border-color 0.2s;
+}
+.footer-joystick-btn:hover {
+  color: var(--green3);
+  border-color: var(--green3);
+}
+
+/* === JOYSTICK MODAL === */
+#joystick-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 600;
+}
+#joystick-backdrop.open { display: block; }
+
+#joystick-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -44%);
+  width: min(90vw, 440px);
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  padding: 1.75rem 1.75rem 1.5rem;
+  z-index: 601;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+#joystick-modal.open {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.joystick-modal-title {
+  font-family: var(--font-disp);
+  font-size: 1.5rem;
+  color: var(--amber);
+  text-shadow: var(--glow-amb);
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.joystick-modal-body p {
+  font-family: var(--font-mono);
+  font-size: 0.93rem;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 0.85rem;
+}
+.joystick-modal-body p:last-child { margin-bottom: 0; }
+
+.joystick-modal-close {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  padding: 0.7rem;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.joystick-modal-close:hover {
+  border-color: var(--green3);
+  color: var(--green3);
+}
+
 /* === SCROLLBAR === */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
