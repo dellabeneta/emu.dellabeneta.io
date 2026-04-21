@@ -182,7 +182,7 @@ const PLATFORMS = [
       { title: "Metroid II: Return of Samus", year: "1991", file: "metroid-ii-return-of-samus.gb" },
       { title: "Pokémon Blue", year: "1996", file: "pokemon-blue-version.gb" },
       { title: "Pokémon Red", year: "1996", file: "pokemon-red-version.gb" },
-      { title: "Pokémon Yellow: Special Pikachu Edition", year: "1998", file: "pokemon-yellow-version-special-pikachu-Edition.gb" },
+      { title: "Pokémon Yellow: Special Pikachu Edition", year: "1998", file: "pokemon-yellow-version-special-pikachu-edition.gb" },
       { title: "Super Mario Land 2: 6 Golden Coins", year: "1992", file: "super-mario-land-2-6-golden-coins.gb" },
       { title: "Super Mario Land", year: "1989", file: "super-mario-land.gb" },
       { title: "Wario Land: Super Mario Land 3", year: "1994", file: "wario-land-super-mario-land-3.gb" }
