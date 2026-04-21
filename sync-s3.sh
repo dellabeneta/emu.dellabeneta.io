@@ -9,11 +9,11 @@ echo "════════════════════════�
 echo ""
 
 echo "[ assets/ ]"
-aws s3 sync assets/ "$BUCKET/assets/" --size-only
+aws s3 sync assets/ "$BUCKET/assets/" --size-only --delete
 echo ""
 
 echo "[ roms/ ]"
-aws s3 sync roms/ "$BUCKET/roms/" --size-only
+aws s3 sync roms/ "$BUCKET/roms/" --size-only --delete
 echo ""
 
 echo "═══════════════════════════════════════════"

@@ -36,13 +36,14 @@ Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 | Nintendo Game Boy Color | 1998 | 90s | gambatte |
 | Nintendo Game Boy Advance | 2001 | 00s | mgba |
 | Sony PlayStation 1 | 1994 | 90s | pcsx_rearmed |
+| Nintendo 64 | 1996 | 90s | mupen64plus |
 | Arcade Classics (FBNeo) | — | 80s/90s | fbneo |
 | Capcom Play System 1 | 1988 | 80s | fbneo |
 | Capcom Play System 2 | 1993 | 90s | fbneo |
 | Capcom Play System 3 | 1996 | 90s | fbneo |
 | SNK Neo Geo MVS | 1990 | 90s | fbneo |
 
-> Mais de **400 jogos** catalogados, filtráveis por década e plataforma.
+> Cerca de **290 jogos** catalogados, filtráveis por década e plataforma.
 
 ---
 
