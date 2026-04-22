@@ -9,7 +9,7 @@ const ROOT = path.resolve(__dirname, '../..');
 function loadData() {
   const content = fs.readFileSync(path.join(ROOT, 'script.js'), 'utf8');
   const start = content.indexOf('\nconst translations');
-  const end = content.indexOf('\nlet currentLang');
+  const end = content.indexOf('\nfunction updateUI');
   const code = content.substring(start, end);
   const ctx = {};
   vm.createContext(ctx);

@@ -63,7 +63,6 @@
       </div>
     </div>
 
-    <!-- Grid removido -->
   </main>
 
   <footer class="site-footer">
@@ -112,15 +111,20 @@
 
 
 
-  <!-- MOBILE: bottom sheet de confirmação -->
-  <div id="mobile-sheet-backdrop"></div>
-  <div id="mobile-sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-game-title" id="sheet-game-title"></div>
-    <div class="sheet-game-meta" id="sheet-game-meta"></div>
-    <div class="sheet-actions">
-      <button id="sheet-play">JOGAR</button>
-      <button id="sheet-cancel">CANCELAR</button>
+  <!-- PC-ONLY: mobile wall -->
+  <div id="mobile-wall" hidden>
+    <div class="mobile-wall-inner">
+      <div class="mobile-wall-logo">RETRO<span>VAULT</span></div>
+      <div class="mobile-wall-divider"></div>
+      <p class="mobile-wall-msg">
+        <strong>emu.dellabeneta.io</strong> não é projetada para dispositivos móveis.<br>
+        Acesse pelo computador para jogar.
+      </p>
+      <p class="mobile-wall-msg mobile-wall-msg--en">
+        <strong>emu.dellabeneta.io</strong> is not designed for mobile devices.<br>
+        Open it on a desktop computer to play.
+      </p>
+      <div class="mobile-wall-url">[ emu.dellabeneta.io ]</div>
     </div>
   </div>
 
@@ -179,6 +183,7 @@
     <button class="joystick-modal-close" id="joystick-modal-close" data-i18n="joystickModalClose">FECHAR</button>
   </div>
 
+  <script src="data.js"></script>
   <script src="script.js"></script>
 
 </body>

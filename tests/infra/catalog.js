@@ -26,7 +26,7 @@ const folderMap = {
 };
 
 function loadPlatforms() {
-  const content = fs.readFileSync(path.join(ROOT, 'script.js'), 'utf8');
+  const content = fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8');
   const end = content.indexOf('\nconst desc_en');
   const code = content.substring(0, end);
   const ctx = {};
