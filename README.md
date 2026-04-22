@@ -10,7 +10,7 @@
 > **Emulação retro no browser. Sem instalação. Sem cadastro. Só jogar.**
 
 [![Site](https://img.shields.io/badge/SITE-emu.dellabeneta.io-2d6e4e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://emu.dellabeneta.io)
-[![Deploy](https://img.shields.io/badge/DEPLOY-GitHub_Actions-cc8800?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/dellabeneta/emu.dellabeneta.io/actions)
+[![CI/CD](https://github.com/dellabeneta/emu.dellabeneta.io/actions/workflows/deploy-emu.yml/badge.svg)](https://github.com/dellabeneta/emu.dellabeneta.io/actions/workflows/deploy-emu.yml)
 [![CDN](https://img.shields.io/badge/CDN-Cloudflare-b05a10?style=for-the-badge&logo=cloudflare&logoColor=white)](https://cloudflare.com)
 [![Host](https://img.shields.io/badge/HOST-Amazon_S3-aa6600?style=for-the-badge&logo=amazons3&logoColor=white)](https://aws.amazon.com/s3/)
 
