@@ -201,4 +201,12 @@ Requer AWS CLI configurado localmente com as credenciais corretas.
 
 ---
 
+## Feedback
+
+O rodapé do site tem um botão **Feedback** que abre um modal para qualquer visitante deixar uma opinião, sugestão ou reportar um bug. O formulário pede nome completo e um comentário em texto livre (máximo 300 caracteres).
+
+Os envios chegam por email via [Formspree](https://formspree.io) — sem backend, sem banco de dados. O endpoint do Formspree fica exposto no JS do cliente por design (é inevitável em front-end puro), mas o formulário tem proteção anti-spam nativa do Formspree e está restrito ao domínio `emu.dellabeneta.io`.
+
+---
+
 *[RetroVault] — feito por [@dellabeneta](https://github.com/dellabeneta)*
