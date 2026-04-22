@@ -523,6 +523,15 @@ const translations = {
     joystickModalP1: "O site usa a Gamepad API do próprio navegador pra detectar controles — o que significa que ele não faz mágica por conta própria. A regra é simples: se o controle funciona no seu sistema operacional, ele vai funcionar aqui também.",
     joystickModalP2: "Então antes de achar que o site tá bugado, plugue o controle, abra o painel de controle do seu sistema e confirma que ele aparece lá. No Windows você procura por \"Controladores de jogo\", no Mac vai em Preferências do Sistema. Depois é só jogar.",
     joystickModalClose: "FECHAR",
+    footerFeedback: "Feedback",
+    feedbackModalTitle: "FEEDBACK",
+    feedbackNameLabel: "NOME COMPLETO",
+    feedbackCommentLabel: "COMENTÁRIO",
+    feedbackNamePlaceholder: "Seu nome completo",
+    feedbackCommentPlaceholder: "Opinião, sugestão ou bug...",
+    feedbackSubmit: "ENVIAR",
+    feedbackSuccess: "Obrigado! Seu comentário foi recebido.",
+    feedbackError: "Erro ao enviar. Tente novamente.",
     booting: "CARREGANDO SISTEMA..."
   },
   en: {
@@ -553,6 +562,15 @@ const translations = {
     joystickModalP1: "The site uses the browser's native Gamepad API to detect controllers — which means it doesn't do any magic on its own. The rule is simple: if the controller works on your operating system, it'll work here too.",
     joystickModalP2: "So before assuming the site is broken, plug in your controller, open your system's game controller settings, and confirm it shows up there. On Windows search for \"Game Controllers\", on Mac go to System Preferences. After that, just play.",
     joystickModalClose: "CLOSE",
+    footerFeedback: "Feedback",
+    feedbackModalTitle: "FEEDBACK",
+    feedbackNameLabel: "FULL NAME",
+    feedbackCommentLabel: "COMMENT",
+    feedbackNamePlaceholder: "Your full name",
+    feedbackCommentPlaceholder: "Opinion, suggestion or bug...",
+    feedbackSubmit: "SEND",
+    feedbackSuccess: "Thanks! Your feedback was received.",
+    feedbackError: "Failed to send. Please try again.",
     booting: "BOOTING SYSTEM..."
   }
 };
@@ -580,11 +598,78 @@ function updateUI() {
     headerStatsEl.innerHTML = text;
   }
 
-  const searchEl = document.getElementById('search');
-  if (searchEl && translations[currentLang][searchEl.getAttribute('data-i18n-placeholder')]) {
-    searchEl.placeholder = translations[currentLang][searchEl.getAttribute('data-i18n-placeholder')];
-  }
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
+  });
 }
+
+// Feedback modal
+(function () {
+  const btn         = document.getElementById('feedback-btn');
+  const backdrop    = document.getElementById('feedback-backdrop');
+  const modal       = document.getElementById('feedback-modal');
+  const closeBtn    = document.getElementById('feedback-modal-close');
+  const form        = document.getElementById('feedback-form');
+  const formWrap    = document.getElementById('feedback-form-wrap');
+  const commentArea = document.getElementById('feedback-comment');
+  const counter     = document.getElementById('feedback-count');
+  const errorEl     = document.getElementById('feedback-error');
+  const successEl   = document.getElementById('feedback-success');
+  const submitBtn   = document.getElementById('feedback-submit');
+
+  function openModal() {
+    backdrop.classList.add('open');
+    modal.classList.add('open');
+    document.getElementById('feedback-name').focus();
+  }
+
+  function closeModal() {
+    backdrop.classList.remove('open');
+    modal.classList.remove('open');
+    form.reset();
+    counter.textContent = '0';
+    errorEl.hidden = true;
+    successEl.hidden = true;
+    formWrap.hidden = false;
+    submitBtn.disabled = false;
+  }
+
+  commentArea.addEventListener('input', () => {
+    counter.textContent = commentArea.value.length;
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    errorEl.hidden = true;
+
+    try {
+      const res = await fetch('https://formspree.io/f/mvzdvokd', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        formWrap.hidden = true;
+        successEl.hidden = false;
+      } else {
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+      }
+    } catch {
+      errorEl.hidden = false;
+      submitBtn.disabled = false;
+    }
+  });
+
+  btn.addEventListener('click', openModal);
+  backdrop.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
 
 // Joystick info modal
 (function () {
@@ -900,8 +985,8 @@ let selectedGameIdx = 0;
 let isEmulatorRunning = false;
 
 document.addEventListener('keydown', e => {
-  // Bloqueio do TAB sempre ativo
-  if (e.key === 'Tab') {
+  // TAB bloqueado globalmente, exceto quando um modal está aberto
+  if (e.key === 'Tab' && !document.querySelector('.open[role="dialog"]')) {
     e.preventDefault();
     return;
   }
@@ -912,8 +997,9 @@ document.addEventListener('keydown', e => {
     return;
   }
 
-  // Se estiver digitando em um input, ignoramos os atalhos P e J
-  if (e.target.tagName === 'INPUT') return;
+  // Se estiver digitando em um input/textarea ou com qualquer modal aberto, ignoramos atalhos
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (document.querySelector('.open[role="dialog"]')) return;
 
   const now = Date.now();
   const max = filtered.length;

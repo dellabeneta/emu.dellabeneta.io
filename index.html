@@ -89,6 +89,16 @@
           </button>
         </div>
       </div>
+      <div class="footer-block footer-feedback">
+        <div class="key-list">
+          <button class="key-item footer-joystick-btn" id="feedback-btn" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="opacity:0.7;flex-shrink:0">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span data-i18n="footerFeedback">Feedback</span>
+          </button>
+        </div>
+      </div>
       <div class="footer-block footer-links">
         <a href="https://github.com/dellabeneta/emu.dellabeneta.io" target="_blank" rel="noopener" class="footer-github" aria-label="GitHub">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -131,6 +141,31 @@
       <span class="exit-icon">✕</span>
       <span class="exit-text">VOLTAR AO VAULT</span>
     </button>
+  </div>
+
+  <!-- Modal: feedback -->
+  <div id="feedback-backdrop" role="presentation"></div>
+  <div id="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title">
+    <div class="joystick-modal-title" id="feedback-modal-title" data-i18n="feedbackModalTitle">FEEDBACK</div>
+    <div id="feedback-form-wrap">
+      <form id="feedback-form" novalidate>
+        <div class="feedback-field">
+          <label class="feedback-label" for="feedback-name" data-i18n="feedbackNameLabel">NOME COMPLETO</label>
+          <input class="feedback-input" type="text" id="feedback-name" name="name" required maxlength="100" data-i18n-placeholder="feedbackNamePlaceholder" autocomplete="given-name">
+        </div>
+        <div class="feedback-field">
+          <label class="feedback-label" for="feedback-comment" data-i18n="feedbackCommentLabel">COMENTÁRIO</label>
+          <textarea class="feedback-textarea" id="feedback-comment" name="message" required maxlength="300" rows="4" data-i18n-placeholder="feedbackCommentPlaceholder"></textarea>
+          <div class="feedback-counter"><span id="feedback-count">0</span>/300</div>
+        </div>
+        <div id="feedback-error" class="feedback-error" hidden data-i18n="feedbackError">Erro ao enviar. Tente novamente.</div>
+        <button type="submit" class="joystick-modal-close" id="feedback-submit" data-i18n="feedbackSubmit">ENVIAR</button>
+      </form>
+    </div>
+    <div id="feedback-success" class="feedback-success" hidden>
+      <p data-i18n="feedbackSuccess">Obrigado! Seu comentário foi recebido.</p>
+    </div>
+    <button class="joystick-modal-close" id="feedback-modal-close" data-i18n="joystickModalClose">FECHAR</button>
   </div>
 
   <!-- Modal: joystick info -->
