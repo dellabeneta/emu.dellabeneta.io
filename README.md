@@ -18,7 +18,7 @@
 
 ## O que é isso?
 
-**RetroVault** é um catálogo interativo de jogos clássicos com emulação direto no browser. Interface estilo terminal CRT com efeito scanlines, tema cyberpunk verde/âmbar, suporte a 13 plataformas e centenas de títulos selecionados a dedo.
+**RetroVault** é um catálogo interativo de jogos clássicos com emulação direto no browser. Interface estilo terminal CRT com efeito scanlines, tema cyberpunk verde/âmbar, suporte a 14 plataformas e centenas de títulos selecionados a dedo.
 
 Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 
