@@ -22,7 +22,7 @@ const translations = {
     footerKeyPlatforms: "plataformas",
     footerKeyGames: "jogos",
     footerKeyPlay: "jogar",
-    footerKeySearch: "buscar jogo",
+    footerKeySearch: "buscar",
     footerJoystick: "Compatibilidade com Joysticks",
     joystickModalTitle: "JOYSTICK NO BROWSER",
     joystickModalP1: "O site usa a Gamepad API do próprio navegador pra detectar controles — o que significa que ele não faz mágica por conta própria. A regra é simples: se o controle funciona no seu sistema operacional, ele vai funcionar aqui também.",
@@ -62,7 +62,7 @@ const translations = {
     footerKeyPlatforms: "platforms",
     footerKeyGames: "games",
     footerKeyPlay: "play",
-    footerKeySearch: "search game",
+    footerKeySearch: "search",
     footerJoystick: "Joystick Compatible",
     joystickModalTitle: "JOYSTICK IN THE BROWSER",
     joystickModalP1: "The site uses the browser's native Gamepad API to detect controllers — which means it doesn't do any magic on its own. The rule is simple: if the controller works on your operating system, it'll work here too.",
@@ -568,6 +568,18 @@ window.addEventListener('resize', () => {
   resizeTimer = setTimeout(() => { calcVisible(); syncNav(); }, 150);
 });
 window.addEventListener('load', init);
+window.addEventListener('load', fetchVisitorCount);
+
+async function fetchVisitorCount() {
+  try {
+    const res = await fetch('https://api.counterapi.dev/v1/emu-dellabeneta-io/visits/hit');
+    const { value: n } = await res.json();
+    const el = document.getElementById('visitor-count');
+    if (el) el.textContent = n >= 1000 ? (n / 1000).toFixed(1).replace('.0', '') + 'k' : n;
+  } catch {
+    // silently fail — counter stays as —
+  }
+}
 
 // ===== EMULATOR INTEGRATION =====
 

@@ -773,6 +773,12 @@ kbd {
   color: var(--green3);
 }
 
+/* === FOOTER VISITORS === */
+.footer-visitors-wrap {
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+
 /* === FOOTER JOYSTICK BUTTON === */
 .footer-joystick-btn {
   background: none;
