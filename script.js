@@ -572,8 +572,8 @@ window.addEventListener('load', fetchVisitorCount);
 
 async function fetchVisitorCount() {
   try {
-    const res = await fetch('https://api.counterapi.dev/v1/emu-dellabeneta-io/visits/hit');
-    const { value: n } = await res.json();
+    const res = await fetch('/api/visits');
+    const { count: n } = await res.json();
     const el = document.getElementById('visitor-count');
     if (el) el.textContent = n >= 1000 ? (n / 1000).toFixed(1).replace('.0', '') + 'k' : n;
   } catch {
