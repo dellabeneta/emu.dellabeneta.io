@@ -70,30 +70,57 @@ Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 ## Stack técnica
 
 ```
-Frontend       → HTML + CSS + JavaScript (sem frameworks, sem build)
-Emulação       → EmulatorJS via CDN (cdn.emulatorjs.org)
-Hospedagem     → AWS S3 (static website hosting)
-CDN / HTTPS    → Cloudflare (proxy + cache + certificado)
-CI/CD          → GitHub Actions (test → deploy → smoke)
-Segurança      → Bucket policy + WAF + SRI + Security Headers
+Frontend            → HTML + CSS + JavaScript (sem frameworks, sem build)
+Emulação            → EmulatorJS via CDN (cdn.emulatorjs.org)
+Hospedagem          → AWS S3 (static website hosting)
+CDN / HTTPS         → Cloudflare (proxy + cache + certificado)
+Contador de visitas → Cloudflare Worker + Workers KV
+CI/CD               → GitHub Actions (test → deploy → smoke)
+Segurança           → Bucket policy + WAF + SRI + Security Headers
 ```
 
 ### Arquitetura
 
-```
-                    ┌─────────────┐
-    usuário ──────► │  Cloudflare │ ◄── cache + HTTPS + WAF + headers
-                    └──────┬──────┘
-                           │ apenas IPs Cloudflare
-                    ┌──────▼──────┐
-                    │   AWS S3    │ ← bucket restrito
-                    │             │   index.html / script.js / style.css
-                    │  assets/    │   imagens das plataformas
-                    │  roms/      │   arquivos de jogo
-                    └─────────────┘
+O diagrama abaixo mostra o fluxo completo de uma requisição — do usuário até os dados.
 
-    GitHub ──push──► Actions: test ──► deploy ──► smoke
 ```
+  Usuário abre emu.dellabeneta.io
+              │
+              ▼
+  ┌───────────────────────────────────────────────────┐
+  │                   Cloudflare                      │
+  │        cache · HTTPS · WAF · security headers     │
+  └────────────────────┬──────────────────────────────┘
+                       │
+           ┌───────────┴────────────┐
+           │                        │
+           │ GET /api/visits         │ GET /*
+           │                        │ (html, css, js, roms, assets)
+           ▼                        ▼
+  ┌─────────────────────┐   ┌──────────────────────┐
+  │  Cloudflare Worker  │   │       AWS S3          │
+  │  retrovault-visits  │   │   bucket restrito     │
+  │                     │   │                       │
+  │  incrementa count   │   │  index.html           │
+  │  retorna JSON       │   │  script.js            │
+  │  { count: N }       │   │  style.css            │
+  └──────────┬──────────┘   │  assets/ · roms/      │
+             │               └──────────────────────┘
+             ▼
+  ┌─────────────────────┐
+  │    Workers KV       │
+  │    VISITORS         │
+  │    { count: N }     │
+  └─────────────────────┘
+
+  GitHub ──push──► Actions: test ──► deploy ──► smoke
+```
+
+**Como o contador funciona na prática:**
+1. Usuário abre o site — o browser carrega o `script.js` do S3 via Cloudflare
+2. O JS faz `fetch('/api/visits')` — a Cloudflare roteia para o Worker
+3. O Worker lê o valor atual do KV, incrementa, grava e retorna `{ count: N }`
+4. O número aparece no rodapé ao lado do ícone de olho
 
 ### CI/CD
 
@@ -198,6 +225,22 @@ Requer AWS CLI configurado localmente com as credenciais corretas.
 | Hotlink protection | WAF Custom Rule na Cloudflare bloqueia qualquer asset servido com `Referer` fora de `dellabeneta.io` — impede que outros sites consumam ROMs, imagens e demais arquivos |
 | Integridade do EmulatorJS | SRI (Subresource Integrity) com hash SHA-256 na tag de carregamento — o browser recusa executar o script se o arquivo do CDN externo for adulterado |
 | Security headers | Response Header Transform Rule na Cloudflare adiciona em todas as respostas: `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` |
+
+---
+
+## Contador de visitas
+
+O rodapé exibe o número total de visitas ao site em tempo real, representado por um ícone de olho.
+
+A solução é serverless e totalmente dentro da infraestrutura Cloudflare:
+
+| Componente | Papel |
+|---|---|
+| **Cloudflare Worker** (`retrovault-visits`) | Função JavaScript que roda na borda da rede Cloudflare, sem servidor dedicado. Intercepta `GET /api/visits`, incrementa o contador e retorna JSON. |
+| **Workers KV** (`VISITORS`) | Banco chave-valor distribuído globalmente. Armazena uma única chave: `count`. Leitura e escrita em qualquer edge da Cloudflare sem latência de região. |
+| **Rota** | `emu.dellabeneta.io/api/visits` aponta exclusivamente para o Worker — o resto do tráfego segue para o S3 normalmente. |
+
+Não há servidor, não há banco de dados relacional, não há dependência externa. O Worker é análogo a uma AWS Lambda com API Gateway — mas roda no edge, com cold start zero e integrado nativamente ao mesmo proxy que já serve o site.
 
 ---
 
