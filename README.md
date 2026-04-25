@@ -16,9 +16,7 @@
 
 ### O que é isso?
 
-**RetroVault** é um catálogo interativo de jogos clássicos com emulação direto no browser. Interface estilo terminal CRT com efeito scanlines, tema cyberpunk verde/âmbar, suporte a 14 plataformas e centenas de títulos selecionados a dedo.
-
-Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
+**RetroVault** é um catálogo interativo de jogos clássicos com emulação direto no browser. Interface estilo terminal CRT com efeito scanlines, tema cyberpunk verde/âmbar, suporte a 14 plataformas e centenas de títulos selecionados a dedo. Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 
 ### Plataformas disponíveis
 
@@ -86,18 +84,18 @@ O diagrama abaixo mostra o fluxo completo de uma requisição — do usuário at
                        │
            ┌───────────┴────────────┐
            │                        │
-           │ GET /api/visits         │ GET /*
+           │ GET /api/visits        │ GET /*
            │                        │ (html, css, js, roms, assets)
            ▼                        ▼
   ┌─────────────────────┐   ┌──────────────────────┐
-  │  Cloudflare Worker  │   │       AWS S3          │
-  │  retrovault-visits  │   │   bucket restrito     │
-  │                     │   │                       │
-  │  incrementa count   │   │  index.html           │
-  │  retorna JSON       │   │  script.js            │
-  │  { count: N }       │   │  style.css            │
-  └──────────┬──────────┘   │  assets/ · roms/      │
-             │               └──────────────────────┘
+  │  Cloudflare Worker  │   │       AWS S3         │
+  │  retrovault-visits  │   │   bucket restrito    │
+  │                     │   │                      │
+  │  incrementa count   │   │  index.html          │
+  │  retorna JSON       │   │  script.js           │
+  │  { count: N }       │   │  style.css           │
+  └──────────┬──────────┘   │  assets/ · roms/     │
+             │              └──────────────────────┘
              ▼
   ┌─────────────────────┐
   │    Workers KV       │
