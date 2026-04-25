@@ -14,13 +14,13 @@
 [![CDN](https://img.shields.io/badge/CDN-Cloudflare-b05a10?style=for-the-badge&logo=cloudflare&logoColor=white)](https://cloudflare.com)
 [![Host](https://img.shields.io/badge/HOST-Amazon_S3-aa6600?style=for-the-badge&logo=amazons3&logoColor=white)](https://aws.amazon.com/s3/)
 
-## O que é isso?
+### O que é isso?
 
 **RetroVault** é um catálogo interativo de jogos clássicos com emulação direto no browser. Interface estilo terminal CRT com efeito scanlines, tema cyberpunk verde/âmbar, suporte a 14 plataformas e centenas de títulos selecionados a dedo.
 
 Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 
-## Plataformas disponíveis
+### Plataformas disponíveis
 
 | Plataforma | Lançamento | Era | Emulador |
 |---|---|---|---|
@@ -41,7 +41,7 @@ Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 
 > Cerca de **290 jogos** catalogados, filtráveis por década e plataforma.
 
-## Como usar
+### Como usar
 
 **Mouse / Touch**
 - Navegue pelo carousel de plataformas com as setas
@@ -59,7 +59,7 @@ Acessa, escolhe uma plataforma, escolhe o jogo e começa a jogar. É isso.
 
 **Idiomas:** PT-BR / EN — botão no canto superior direito.
 
-## Stack técnica
+### Stack técnica
 
 ```
 Frontend            → HTML + CSS + JavaScript (sem frameworks, sem build)
@@ -128,7 +128,7 @@ O purge de cache é **seletivo** — invalida apenas `index.html`, `script.js`, 
 
 As credenciais AWS e Cloudflare são gerenciadas via GitHub Secrets, sem nenhuma informação sensível no código.
 
-## Testes
+### Testes
 
 ```
 tests/
@@ -149,7 +149,7 @@ node tests/unit/i18n.js
 node tests/unit/platforms.js
 ```
 
-## Estrutura do projeto
+### Estrutura do projeto
 
 ```
 emu.dellabeneta.io/
@@ -172,7 +172,7 @@ emu.dellabeneta.io/
         └── deploy-emu.yml
 ```
 
-## Rodando localmente
+### Rodando localmente
 
 Não precisa de build. Só precisa servir os arquivos estáticos — qualquer servidor HTTP funciona.
 
@@ -189,7 +189,7 @@ npx serve .
 
 > As ROMs precisam estar na pasta `roms/` localmente para o emulador funcionar.
 
-## Sincronizando ROMs e assets com o S3
+### Sincronizando ROMs e assets com o S3
 
 ROMs e assets não são versionados no git — vivem diretamente no S3. Para sincronizar após adicionar novos arquivos:
 
@@ -199,7 +199,7 @@ bash sync-s3.sh
 
 Requer AWS CLI configurado localmente com as credenciais corretas.
 
-## Segurança
+### Segurança
 
 | Camada | Implementação |
 |---|---|
@@ -208,7 +208,7 @@ Requer AWS CLI configurado localmente com as credenciais corretas.
 | Integridade do EmulatorJS | SRI (Subresource Integrity) com hash SHA-256 na tag de carregamento — o browser recusa executar o script se o arquivo do CDN externo for adulterado |
 | Security headers | Response Header Transform Rule na Cloudflare adiciona em todas as respostas: `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` |
 
-## Contador de visitas
+### Contador de visitas
 
 O rodapé exibe o número total de visitas ao site em tempo real, representado por um ícone de olho.
 
@@ -222,7 +222,7 @@ A solução é serverless e totalmente dentro da infraestrutura Cloudflare:
 
 Não há servidor, não há banco de dados relacional, não há dependência externa. O Worker é análogo a uma AWS Lambda com API Gateway — mas roda no edge, com cold start zero e integrado nativamente ao mesmo proxy que já serve o site.
 
-## Feedback
+### Feedback
 
 O rodapé do site tem um botão **Feedback** que abre um modal para qualquer visitante deixar uma opinião, sugestão ou reportar um bug. O formulário pede nome completo e um comentário em texto livre (máximo 300 caracteres).
 
