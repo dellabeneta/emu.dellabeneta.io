@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'index.html'
+      - 'script.js'
+      - 'style.css'
+      - 'favicon.ico'
+      - 'tests/**'
+      - '.github/workflows/**'
 
 jobs:
 
